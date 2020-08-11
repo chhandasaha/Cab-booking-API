@@ -68,3 +68,15 @@ test('User | get all (auth)', async () => {
 
   await user.destroy();
 });
+
+test('User | test cab booking', async () => {
+  const user = await User.create({
+    userid: 'someuser',
+    password: 'securepassword',
+  });
+  expect(true).toBe(true);
+
+
+  await user.destroy();
+});
+
