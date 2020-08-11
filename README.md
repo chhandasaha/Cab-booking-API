@@ -36,7 +36,7 @@ Start by cloning this repository
 
 ```sh
 # HTTPS
-$ git clone https://github.com/aichbauer/express-rest-api-boilerplate.git
+$ git clone https://github.com/Shankhanil/express-rest-api-boilerplate.git
 ```
 
 then
@@ -577,3 +577,4 @@ Optional:
 ## LICENSE
 
 MIT © Lukas Aichbauer
+MIT © Shankhanil
