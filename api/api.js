@@ -49,6 +49,10 @@ app.all('/private/*', (req, res, next) => auth(req, res, next));
 app.use('/public', mappedOpenRoutes);
 app.use('/private', mappedAuthRoutes);
 
+app.get('/', function (req, res) {
+	res.status(200).json({ msg: 'Server working fine' });
+});
+
 server.listen(config.port, () => {
   if (environment !== 'production' &&
     environment !== 'development' &&
@@ -57,5 +61,6 @@ server.listen(config.port, () => {
     console.error(`NODE_ENV is set to ${environment}, but only production and development are valid.`);
     process.exit(1);
   }
+  console.error(`listening at ${config.port}`);
   return DB;
 });
