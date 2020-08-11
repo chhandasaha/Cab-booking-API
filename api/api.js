@@ -24,7 +24,7 @@ const environment = process.env.NODE_ENV;
 const app = express();
 const server = http.Server(app);
 const mappedOpenRoutes = mapRoutes(config.publicRoutes, 'api/controllers/');
-const mappedAuthRoutes = mapRoutes(config.privateRoutes, 'api/controllers/');
+// const mappedAuthRoutes = mapRoutes(config.privateRoutes, 'api/controllers/');
 const DB = dbService(environment, config.migrate).start();
 
 // allow cross origin requests
@@ -47,7 +47,7 @@ app.all('/private/*', (req, res, next) => auth(req, res, next));
 
 // fill routes for express application
 app.use('/public', mappedOpenRoutes);
-app.use('/private', mappedAuthRoutes);
+// app.use('/private', mappedAuthRoutes);
 
 app.get('/', (req, res) => {
   res.status(200).json({ msg: 'Server working fine' });
@@ -58,9 +58,11 @@ server.listen(config.port, () => {
     environment !== 'development' &&
     environment !== 'testing'
   ) {
+    // eslint-disable-next-line no-console
     console.error(`NODE_ENV is set to ${environment}, but only production and development are valid.`);
     process.exit(1);
   }
+  // eslint-disable-next-line no-console
   console.error(`listening at ${config.port}`);
   return DB;
 });

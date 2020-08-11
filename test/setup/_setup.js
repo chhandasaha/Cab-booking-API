@@ -21,6 +21,7 @@ const beforeAction = async () => {
 
   await database.authenticate();
   await database.drop();
+  // eslint-disable-next-line no-console
   await database.sync().then(() => console.log('Connection to the database has been established successfully'));
 
   return testapp;

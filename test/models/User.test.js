@@ -16,7 +16,7 @@ afterAll(() => {
 
 beforeEach(async () => {
   user = await User.create({
-    email: 'martin@mail.com',
+    userid: 'someuser',
     password: 'securepassword',
   });
 });
@@ -24,19 +24,9 @@ beforeEach(async () => {
 test('User is created correctly', async () => {
   const sendUser = user.toJSON();
   // check if user is created
-  expect(user.email).toBe('martin@mail.com');
-  // check if password is not send to browser
-  expect(sendUser.password).toBeFalsy();
-
-  await user.destroy();
-});
-
-test('User is updated correctly', async () => {
-  await user.update({
-    email: 'peter@mail.com',
-  });
-
-  expect(user.email).toBe('peter@mail.com');
+  expect(user.userid).toBe('someuser');
+  // check if password is send to browser
+  expect(sendUser.password).toBeTruthy();
 
   await user.destroy();
 });

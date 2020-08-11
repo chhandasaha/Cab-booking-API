@@ -1,49 +1,39 @@
 const User = require('../models/User');
 const authService = require('../services/auth.service');
-const bcryptService = require('../services/bcrypt.service');
+// const bcryptService = require('../services/bcrypt.service');
 
 const UserController = () => {
   const register = async (req, res) => {
-    const { password } = req.params;
-
-    console.log(password);
+    const { userid, password } = req.params;
 
     try {
       const user = await User.create({
-        // id: body.id,
-        password: password,
+        userid,
+        password,
       });
       const token = authService().issue({ id: user.id });
       return res.status(200).json({ token, user });
     } catch (err) {
-      console.log(err);
       return res.status(500).json({ msg: 'Internal server error' });
     }
   };
 
   const login = async (req, res) => {
-    const { id, password } = req.params;
+    const { userid, password } = req.params;
 
-    console.log(id, password);
-
-    if (id && password) {
+    if (userid && password) {
       try {
         const user = await User
           .findOne({
             where: {
-              id,
+              userid,
             },
           });
-        console.log(password);
 
         if (!user) {
           return res.status(400).json({ msg: 'Bad Request: User not found' });
         }
-        // const comp = bcryptService().comparePassword(password, user.password);
-		
-        // console.log(comp);
-		console.log(user.password, password);
-        if (password == user.password) {
+        if (password === user.password) {
           const token = authService().issue({ id: user.id });
 
           return res.status(200).json({ token, user });
@@ -51,7 +41,6 @@ const UserController = () => {
 
         return res.status(401).json({ msg: 'Unauthorized' });
       } catch (err) {
-        console.log(err);
         return res.status(500).json({ msg: 'Internal server error' });
       }
     }
@@ -64,8 +53,7 @@ const UserController = () => {
 
     authService().verify(token, (err) => {
       if (err) {
-        // return res.status(401).json({ isvalid: false, err: 'Invalid Token!' });
-        return res.status(401).json({ isvalid: false, error: err.message });
+        return res.status(401).json({ isvalid: false, err: 'Invalid Token!' });
       }
 
       return res.status(200).json({ isvalid: true });
@@ -78,7 +66,6 @@ const UserController = () => {
 
       return res.status(200).json({ users });
     } catch (err) {
-      console.log(err);
       return res.status(500).json({ msg: 'Internal server error' });
     }
   };
