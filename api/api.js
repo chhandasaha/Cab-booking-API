@@ -49,8 +49,8 @@ app.all('/private/*', (req, res, next) => auth(req, res, next));
 app.use('/public', mappedOpenRoutes);
 app.use('/private', mappedAuthRoutes);
 
-app.get('/', function (req, res) {
-	res.status(200).json({ msg: 'Server working fine' });
+app.get('/', (req, res) => {
+  res.status(200).json({ msg: 'Server working fine' });
 });
 
 server.listen(config.port, () => {

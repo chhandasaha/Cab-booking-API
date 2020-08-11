@@ -4,43 +4,46 @@ const bcryptService = require('../services/bcrypt.service');
 
 const UserController = () => {
   const register = async (req, res) => {
-    const { body } = req;
+    const { password } = req.params;
 
-    if (body.password === body.password2) {
-      try {
-        const user = await User.create({
-          email: body.email,
-          password: body.password,
-        });
-        const token = authService().issue({ id: user.id });
+    console.log(password);
 
-        return res.status(200).json({ token, user });
-      } catch (err) {
-        console.log(err);
-        return res.status(500).json({ msg: 'Internal server error' });
-      }
+    try {
+      const user = await User.create({
+        // id: body.id,
+        password: password,
+      });
+      const token = authService().issue({ id: user.id });
+      return res.status(200).json({ token, user });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: 'Internal server error' });
     }
-
-    return res.status(400).json({ msg: 'Bad Request: Passwords don\'t match' });
   };
 
   const login = async (req, res) => {
-    const { email, password } = req.body;
+    const { id, password } = req.params;
 
-    if (email && password) {
+    console.log(id, password);
+
+    if (id && password) {
       try {
         const user = await User
           .findOne({
             where: {
-              email,
+              id,
             },
           });
+        console.log(password);
 
         if (!user) {
           return res.status(400).json({ msg: 'Bad Request: User not found' });
         }
-
-        if (bcryptService().comparePassword(password, user.password)) {
+        // const comp = bcryptService().comparePassword(password, user.password);
+		
+        // console.log(comp);
+		console.log(user.password, password);
+        if (password == user.password) {
           const token = authService().issue({ id: user.id });
 
           return res.status(200).json({ token, user });
@@ -53,16 +56,16 @@ const UserController = () => {
       }
     }
 
-    return res.status(400).json({ msg: 'Bad Request: Email or password is wrong' });
+    return res.status(400).json({ msg: 'Bad Request: Something is wrong' });
   };
 
   const validate = (req, res) => {
-    const { token } = req.body;
+    const { token } = req.params;
 
     authService().verify(token, (err) => {
       if (err) {
         // return res.status(401).json({ isvalid: false, err: 'Invalid Token!' });
-		return res.status(401).json({ isvalid: false, error:err.message })
+        return res.status(401).json({ isvalid: false, error: err.message });
       }
 
       return res.status(200).json({ isvalid: true });

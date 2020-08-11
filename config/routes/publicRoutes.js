@@ -1,8 +1,9 @@
 const publicRoutes = {
-  'GET /user': 'UserController.register',
-  'GET /register': 'UserController.register', // alias for GET /user
-  'GET /login': 'UserController.login',
-  'GET /validate': 'UserController.validate',
+  'GET /user/:password': 'UserController.register',
+  'GET /register/:password': 'UserController.register', // alias for GET /user
+  'GET /login/:id/:password': 'UserController.login',
+  'GET /validate/:token': 'UserController.validate',
+  'GET /users': 'UserController.getAll',
 };
 
 module.exports = publicRoutes;
