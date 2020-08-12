@@ -1,6 +1,7 @@
 /**
  * third party libraries
  */
+const rateLimit = require('express-rate-limit');
 const bodyParser = require('body-parser');
 const express = require('express');
 const helmet = require('helmet');
@@ -41,6 +42,19 @@ app.use(helmet({
 // parsing the request bodys
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+// Rate limiter
+
+// Enable if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
+// see https://expressjs.com/en/guide/behind-proxies.html
+// app.set('trust proxy', 1);
+
+const limiter = rateLimit({
+  windowMs: 1000, // window length = 1 sec
+  max: 5, // limit each IP to 5 requests per windowMs
+});
+
+app.use(limiter);
 
 // secure your private routes with jwt authentication middleware
 app.all('/private/*', (req, res, next) => auth(req, res, next));

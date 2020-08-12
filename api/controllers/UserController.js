@@ -4,7 +4,7 @@ const authService = require('../services/auth.service');
 
 const UserController = () => {
   const register = async (req, res) => {
-    const { userid, password } = req.params;
+    const { userid, password } = req.body;
 
     try {
       const user = await User.create({
@@ -19,7 +19,7 @@ const UserController = () => {
   };
 
   const login = async (req, res) => {
-    const { userid, password } = req.params;
+    const { userid, password } = req.body;
 
     if (userid && password) {
       try {
@@ -49,7 +49,7 @@ const UserController = () => {
   };
 
   const validate = (req, res) => {
-    const { token } = req.params;
+    const { token } = req.body;
 
     authService().verify(token, (err) => {
       if (err) {
