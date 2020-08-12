@@ -21,7 +21,7 @@ test('Booking | create', async () => {
     userid: 'someuser',
     password: 'securepassword',
   });
-  const res = await request(api)
+  let res = await request(api)
     .get('/public/bookcab')
     .set('Accept', /json/)
     .send({
@@ -37,8 +37,35 @@ test('Booking | create', async () => {
   expect(res.body.newBooking.endLoc).toBe('Loc2');
   expect(res.body.newBooking.bookingId).toBeTruthy();
 
+  // test for wrong password
+  res = await request(api)
+    .get('/public/cabdetails')
+    .send({
+      userid: 'someuser',
+      password: 'wrong-password',
+    }).expect(401);
+
+  // test for missing password
+  res = await request(api)
+    .get('/public/cabdetails')
+    .send({
+      userid: 'someuser',
+    }).expect(400);
+
+  // test for unregistered user
+  res = await request(api)
+    .get('/public/cabdetails')
+    .send({
+      userid: 'unregistered-user',
+      password: 'his-password',
+    }).expect(400);
+
 
   await user.destroy();
+  await BookingInfo.destroy({
+    where: {},
+    truncate: true,
+  });
 });
 
 test('Booking | retrieve', async () => {
@@ -58,15 +85,39 @@ test('Booking | retrieve', async () => {
     endLoc: 'Loc4',
     bookingId: 'user456',
   });
-  const res1 = await request(api)
+  let res = await request(api)
     .get('/public/cabdetails')
     .send({
       userid: 'someuser',
       password: 'securepassword',
     }).expect(200);
 
-  expect(res1.body.bookHistory).toBeTruthy();
-  expect(res1.body.bookHistory.length).toBe(2);
+  expect(res.body.bookHistory).toBeTruthy();
+  expect(res.body.bookHistory.length).toBe(2);
+
+  // test for wrong password
+  res = await request(api)
+    .get('/public/cabdetails')
+    .send({
+      userid: 'someuser',
+      password: 'wrong-password',
+    }).expect(401);
+
+  // test for missing password
+  res = await request(api)
+    .get('/public/cabdetails')
+    .send({
+      userid: 'someuser',
+    }).expect(400);
+
+  // test for unregistered user
+  res = await request(api)
+    .get('/public/cabdetails')
+    .send({
+      userid: 'unregistered-user',
+      password: 'his-password',
+    }).expect(400);
+
 
   await user1.destroy();
   await book1.destroy();

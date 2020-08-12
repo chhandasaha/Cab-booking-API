@@ -16,8 +16,12 @@ afterAll(() => {
 });
 
 test('User | create', async () => {
-  const res = await request(api)
-    .get('/public/user/someuser/securepassword')
+  let res = await request(api)
+    .get('/public/user')
+    .send({
+      userid: 'someuser',
+      password: 'securepassword',
+    })
     .expect(200);
 
   expect(res.body.user).toBeTruthy();
@@ -27,6 +31,13 @@ test('User | create', async () => {
   expect(user.id).toBe(res.body.user.id);
   expect(user.userid).toBe(res.body.user.userid);
 
+  res = await request(api)
+    .get('/public/user')
+    .send({
+      userid: 'someuser',
+    })
+    .expect(500);
+
   await user.destroy();
 });
 
@@ -35,14 +46,42 @@ test('User | login', async () => {
     userid: 'someuser',
     password: 'securepassword',
   });
-
-  const res = await request(api)
-    .get('/public/login/someuser/securepassword')
+  // correct password login
+  let res = await request(api)
+    .get('/public/login')
+    .send({
+      userid: 'someuser',
+      password: 'securepassword',
+    })
     .expect(200);
 
   expect(res.body.token).toBeTruthy();
 
   expect(user).toBeTruthy();
+
+  // wrong password
+  res = await request(api)
+    .get('/public/login')
+    .send({
+      userid: 'someuser',
+      password: 'wrongpassword',
+    })
+    .expect(401);
+
+  // no password
+  res = await request(api)
+    .get('/public/login')
+    .send({
+      userid: 'someuser',
+    })
+    .expect(400);
+  // unknown user
+  res = await request(api)
+    .get('/public/login')
+    .send({
+      userid: 'someunknownuser',
+    })
+    .expect(400);
 
   await user.destroy();
 });
@@ -53,12 +92,6 @@ test('User | get all (auth)', async () => {
     password: 'securepassword',
   });
 
-  const res = await request(api)
-    .get('/public/login/someuser/securepassword')
-    .expect(200);
-
-  expect(res.body.token).toBeTruthy();
-
   const res2 = await request(api)
     .get('/public/users')
     .expect(200);
@@ -68,15 +101,3 @@ test('User | get all (auth)', async () => {
 
   await user.destroy();
 });
-
-test('User | test cab booking', async () => {
-  const user = await User.create({
-    userid: 'someuser',
-    password: 'securepassword',
-  });
-  expect(true).toBe(true);
-
-
-  await user.destroy();
-});
-

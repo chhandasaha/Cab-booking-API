@@ -26,7 +26,7 @@ test('User is created correctly', async () => {
   // check if user is created
   expect(user.userid).toBe('someuser');
   // check if password is send to browser
-  expect(sendUser.password).toBeTruthy();
+  expect(sendUser.password).toBeFalsy();
 
   await user.destroy();
 });
