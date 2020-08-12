@@ -4,7 +4,7 @@ const {
   afterAction,
 } = require('../setup/_setup');
 const User = require('../../api/models/User');
-// const BookingInfo = require('../../api/models/BookingInfo');
+const BookingInfo = require('../../api/models/BookingInfo');
 
 let api;
 
@@ -32,13 +32,44 @@ test('Booking | create', async () => {
 
     })
     .expect(200);
-  // eslint-disable-next-line
-	console.log(res); 
-  expect(res.body.userid).toBeTruthy();
-  expect(res.body.startLoc).toBeTruthy();
-  expect(res.body.endLoc).toBeTruthy();
+  expect(res.body.newBooking.userid).toBe('someuser');
+  expect(res.body.newBooking.startLoc).toBe('Loc1');
+  expect(res.body.newBooking.endLoc).toBe('Loc2');
+  expect(res.body.newBooking.bookingId).toBeTruthy();
 
 
   await user.destroy();
+});
+
+test('Booking | retrieve', async () => {
+  const user1 = await User.create({
+    userid: 'someuser',
+    password: 'securepassword',
+  });
+  const book1 = await BookingInfo.create({
+    userid: 'someuser',
+    startLoc: 'Loc1',
+    endLoc: 'Loc2',
+    bookingId: 'user123',
+  });
+  const book2 = await BookingInfo.create({
+    userid: 'someuser',
+    startLoc: 'Loc3',
+    endLoc: 'Loc4',
+    bookingId: 'user456',
+  });
+  const res1 = await request(api)
+    .get('/public/cabdetails')
+    .send({
+      userid: 'someuser',
+      password: 'securepassword',
+    }).expect(200);
+
+  expect(res1.body.bookHistory).toBeTruthy();
+  expect(res1.body.bookHistory.length).toBe(2);
+
+  await user1.destroy();
+  await book1.destroy();
+  await book2.destroy();
 });
 

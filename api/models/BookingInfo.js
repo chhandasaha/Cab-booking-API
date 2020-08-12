@@ -15,6 +15,10 @@ const BookingInfo = sequelize.define('BookingInfo', {
   endLoc: {
     type: Sequelize.STRING,
   },
+  bookingId: {
+    type: Sequelize.STRING,
+    unique: true,
+  },
 }, { tableName });
 
 // eslint-disable-next-line
