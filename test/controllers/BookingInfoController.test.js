@@ -23,6 +23,7 @@ test('Booking | create', async () => {
   });
   const res = await request(api)
     .get('/public/bookcab')
+    .set('Accept', /json/)
     .send({
       userid: 'someuser',
       password: 'securepassword',
@@ -31,7 +32,12 @@ test('Booking | create', async () => {
 
     })
     .expect(200);
-  expect(res.body).toBeTruthy();
+  // eslint-disable-next-line
+	console.log(res); 
+  expect(res.body.userid).toBeTruthy();
+  expect(res.body.startLoc).toBeTruthy();
+  expect(res.body.endLoc).toBeTruthy();
+
 
   await user.destroy();
 });

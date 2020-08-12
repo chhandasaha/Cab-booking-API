@@ -19,7 +19,7 @@ const BookingInfoController = () => {
           });
 
         if (!user) {
-          return res.status(400).json({ msg: 'Bad Request: User not found' });
+          return res.status(403).json({ msg: 'Bad Request: User not found' });
         }
         if (password === user.password) {
           const newBooking = await BookingInfo.create({
@@ -35,7 +35,7 @@ const BookingInfoController = () => {
         return res.status(500).json({ msg: 'Internal server error' });
       }
     }
-    return res.status(400).json({ err: 'Something is missing' });
+    return res.status(402).json({ err: 'Something is missing' });
     // return res.status(200).json({ isworking: true });
   };
   const getBooking = async (req, res) => res.status(200).json({ isworking: true });
