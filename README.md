@@ -1,6 +1,6 @@
 # express-rest-api-boilerplate
 
-> Node-Express REST API for cab booking with JWT Authentication, using SQLITE
+> Node-Express REST API for cab booking with JWT Authentication, using SQLITE : Wednesday Solution Assignment for Backend developer role.
 
 - authentication via [JWT](https://jwt.io/)
 - routes mapping via [express-routes-mapper](https://github.com/aichbauer/express-routes-mapper)
@@ -11,7 +11,7 @@
 
 ## Install and Use
 
-Start by cloning this repository
+Clone this repository
 
 ```sh
 # HTTPS
@@ -35,7 +35,7 @@ This Project has 4 main directories:
 - api - for controllers, models, services, etc.
 - config - for routes, database, etc.
 - db - this is only a dir for the sqlite db, the default for NODE_ENV development
-- test - using [Jest](https://github.com/facebook/jest)
+- test - using JEST
 
 ## Checkpoints met
 
@@ -44,12 +44,12 @@ The list of checkpoints provided by the assignment that are met
 - [x] Test with min. 80% coverage
 - [x] Proper HTTP status error message
 - [x] Sequelize
-- [] DB Migration
+- [ ] DB Migration
 - [x] Seed scripts
 - [x] Rate limitation
 - [x] Authentication (using JWT)
-- [] Swagger documentation 
-- [] Pagination
+- [ ] Swagger documentation 
+- [ ] Pagination
 
 Note: I am aware of the idea of DB migration, Swagger documentation and API pagination, however I was not able to implement them.
 
