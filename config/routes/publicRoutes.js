@@ -4,7 +4,7 @@ const publicRoutes = {
   'GET /login/:userid/:password': 'UserController.login',
   'GET /validate/:token': 'UserController.validate',
   'GET /users': 'UserController.getAll',
-  
+
   'GET /bookcab': 'BookingInfoController.createBooking',
   'GET /cabdetails': 'BookingInfoController.getBooking',
 };
