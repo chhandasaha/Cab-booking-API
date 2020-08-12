@@ -1,6 +1,6 @@
 const User = require('../models/User');
 const authService = require('../services/auth.service');
-// const bcryptService = require('../services/bcrypt.service');
+const bcryptService = require('../services/bcrypt.service');
 
 const UserController = () => {
   const register = async (req, res) => {
@@ -33,7 +33,7 @@ const UserController = () => {
         if (!user) {
           return res.status(400).json({ msg: 'Bad Request: User not found' });
         }
-        if (password === user.password) {
+        if (bcryptService().comparePassword(password, user.password)) {
           const token = authService().issue({ id: user.id });
 
           return res.status(200).json({ token, user });
