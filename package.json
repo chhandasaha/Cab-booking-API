@@ -1,7 +1,6 @@
 {
-  "name": "express-rest-api-boilerplate",
-  "version": "0.0.0",
-  "author": "Shankhanil Ghosh",
+  "name": "Cab-booking-API",
+  "version": "1.0.0",
   "license": "MIT",
   "repository": {
     "type": "git"
