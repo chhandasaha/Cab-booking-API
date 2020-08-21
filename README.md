@@ -1,6 +1,6 @@
 # express-rest-api-boilerplate
 
-> Node-Express REST API for cab booking with JWT Authentication, using SQLITE : Wednesday Solution Assignment for Backend developer role.
+> Node-Express REST API for cab booking with JWT Authentication, using SQLITE
 
 - authentication via [JWT](https://jwt.io/)
 - routes mapping via [express-routes-mapper](https://github.com/aichbauer/express-routes-mapper)
@@ -57,4 +57,5 @@ Note: I am aware of the idea of DB migration, Swagger documentation and API pagi
 ## LICENSE
 
 Boilerplate copyright MIT © Lukas Aichbauer
+
 Repository copyright MIT © Chhanda Saha
